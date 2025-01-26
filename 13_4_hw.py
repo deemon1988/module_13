@@ -1,4 +1,4 @@
-# Домашнее задание по теме "Хендлеры обработки сообщений"
+# Домашнее задание по теме "Методы отправки сообщений"
 
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -14,12 +14,15 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 @dp.message_handler(commands=['start'])
 async def start_message(message):
-    print('Привет! Я бот помогающий твоему здоровью.')
+    await message.answer('Привет! Я бот помогающий твоему здоровью.')
 
+@dp.message_handler(text=['hi'])
+async def hello_message(message):
+    await message.answer("Hello message")
 
 @dp.message_handler()
 async def all_message(message):
-    print('Введите команду /start, чтобы начать общение.')
+    await message.answer('Введите команду /start, чтобы начать общение.')
 
 
 if __name__ == '__main__':
