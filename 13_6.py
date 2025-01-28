@@ -55,6 +55,11 @@ async def finish_message(message, state):
 async def start(message):
     await message.answer(f'Привет! Я бот помогающий твоему здоровью.', reply_markup=kb)
 
+@dp.message_handler(text='id')
+async def get_id(message):
+    user_id = message.from_user.id
+    await message.answer(f"User ID: {user_id}")
+
 @dp.message_handler()
 async def all_message(message):
     await message.answer(f'Чтобы продолжить введите /start')

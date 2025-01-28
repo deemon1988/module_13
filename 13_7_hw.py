@@ -35,30 +35,31 @@ async def info(message):
 
 
 @dp.message_handler(text='Рассчитать')
-async def set_age(message, state):
+async def set_age(message):
     await message.answer('Сколько вам лет?')
     await UserState.age.set()
 
 
 @dp.message_handler(state=UserState.age)
 async def set_growth(message, state):
-    await state.update_data(age=message.text)
+    await state.update_data(age=int(message.text))
     await message.answer("Введите ваш рост")
     await UserState.growth.set()
 
 
 @dp.message_handler(state=UserState.growth)
 async def set_weight(message, state):
-    await state.update_data(growth=message.text)
+    await state.update_data(growth=int(message.text))
     await message.answer("Введите ваш вес")
     await UserState.weight.set()
 
 
 @dp.message_handler(state=UserState.weight)
 async def get_msg(message, state):
-    await state.update_data(weight=message.text)
+    await state.update_data(weight=int(message.text))
     data = await state.get_data()
-    await message.answer(f"Ваша норма каллорий {data['age']},{data['growth']},{data['weight']}", reply_markup=kb)
+    msg = (10 * data['weight']) + (6.25 * data['growth']) - ((5 * data['age']) + 5)
+    await message.answer(f"Ваша норма каллорий: {msg}", reply_markup=kb)
     await state.finish()
 
 
